@@ -106,8 +106,8 @@ func (c *Configuration) Merge(opts ...ConfigurationReadOption) *Configuration {
 }
 
 // 反序列化指定的key的值到一个对象中
-func (c *Configuration) UnmarshFromKey(key string, v interface{}) error {
-	return c.viper.UnmarshalKey(key, v)
+func (c *Configuration) UnmarshFromKey(key string, v interface{}, opts ...viper.DecoderConfigOption) error {
+	return c.viper.UnmarshalKey(key, v, opts...)
 }
 
 func (c *Configuration) GetViper() *viper.Viper {

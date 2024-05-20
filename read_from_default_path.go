@@ -9,25 +9,9 @@ import (
 	"github.com/spf13/viper"
 )
 
-const (
-	defaultConfigFile string = "config"
-)
-
 var (
 	supportedFileExtList = []string{".yaml", ".yml", ".json"}
 )
-
-// // 读取配置文件
-// func (c *Configuration) ReadConfiguration(path ...string) *Configuration {
-// 	// fmt.Println("准备读取应用程序目录下的./etc/config.yml配置文件")
-// 	consulViper := viper.New()
-// 	setupViperFromDefaultPath(consulViper)
-// 	c.ReadFromEtcFolder()
-// 	consulViper.MergeConfigMap(c.viper.AllSettings())
-// 	consul.ReadFrom(consulViper)
-
-// 	return c
-// }
 
 func setupViperFromDefaultPath(v *viper.Viper) {
 	basePath, err := os.Getwd()
