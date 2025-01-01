@@ -15,23 +15,23 @@ func newMyLogger() myLogger {
 }
 
 func (myLogger) Trace(msg string, keyvals ...interface{}) {
-	jww.TRACE.Printf(jwwLogMessage(msg, keyvals...))
+	jww.TRACE.Printf("%s", jwwLogMessage(msg, keyvals...))
 }
 
 func (myLogger) Debug(msg string, keyvals ...interface{}) {
-	jww.DEBUG.Printf(jwwLogMessage(msg, keyvals...))
+	jww.DEBUG.Printf("%s", jwwLogMessage(msg, keyvals...))
 }
 
 func (myLogger) Info(msg string, keyvals ...interface{}) {
-	jww.INFO.Printf(jwwLogMessage(msg, keyvals...))
+	jww.INFO.Printf("%s", jwwLogMessage(msg, keyvals...))
 }
 
 func (myLogger) Warn(msg string, keyvals ...interface{}) {
-	jww.WARN.Printf(jwwLogMessage(msg, keyvals...))
+	jww.WARN.Printf("%s", jwwLogMessage(msg, keyvals...))
 }
 
 func (myLogger) Error(msg string, keyvals ...interface{}) {
-	jww.ERROR.Printf(jwwLogMessage(msg, keyvals...))
+	jww.ERROR.Printf("%s", jwwLogMessage(msg, keyvals...))
 }
 
 func jwwLogMessage(msg string, keyvals ...interface{}) string {
