@@ -28,9 +28,11 @@ func GetConsulOptions() *ConsulOptions {
 // }
 
 func SetConsul(options *ConsulOptions) {
-	_options = *options
-	(&_options).Normalize()
-	if len(_options.AclToken) > 0 {
-		os.Setenv("CONSUL_HTTP_TOKEN", _options.AclToken)
+	if options != nil {
+		_options = *options
+		(&_options).Normalize()
+		if len(_options.AclToken) > 0 {
+			os.Setenv("CONSUL_HTTP_TOKEN", _options.AclToken)
+		}
 	}
 }

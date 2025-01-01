@@ -14,9 +14,11 @@ func GetNixOptions() *NixOptions {
 }
 
 func SetNix(options *NixOptions) {
-	_options = *options
-	(&_options).Normalize()
-	if len(_options.AclToken) > 0 {
-		os.Setenv("NIX_HTTP_TOKEN", _options.AclToken)
+	if options != nil {
+		_options = *options
+		(&_options).Normalize()
+		if len(_options.AclToken) > 0 {
+			os.Setenv("NIX_HTTP_TOKEN", _options.AclToken)
+		}
 	}
 }

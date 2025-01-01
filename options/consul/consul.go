@@ -1,6 +1,7 @@
 package consul
 
 import (
+	"encoding/json"
 	"fmt"
 	"net"
 	"net/url"
@@ -35,6 +36,18 @@ func (c *ConsulOptions) Normalize() *ConsulOptions {
 	}
 	c.Registration.normalize()
 	return c
+}
+
+// 序列化为json字符串
+func (c *ConsulOptions) ToJsonString() []byte {
+	m := make(map[string]interface{})
+	m["host"] = c.Host
+	m["port"] = c.Port
+	m["datacenter"] = c.Datacenter
+	m["aclToken"] = c.AclToken
+	m["disabled"] = c.Disabled
+	jsonValue, _ := json.Marshal(m)
+	return jsonValue
 }
 
 // 注册到consul的参数
