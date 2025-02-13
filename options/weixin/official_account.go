@@ -2,6 +2,7 @@ package weixin
 
 import (
 	"encoding/json"
+	"fmt"
 
 	"github.com/spf13/viper"
 )
@@ -10,6 +11,7 @@ const (
 	ConfigurationKey string = "weixin"
 )
 
+// 公众号配置
 type OffiAccount struct {
 	AppID         string `json:"appId" mapstructure:"appId"`
 	AppSecret     string `json:"appSecret" mapstructure:"appSecret"`
@@ -17,9 +19,14 @@ type OffiAccount struct {
 	MessageAesKey string `json:"messageAesKey" mapstructure:"messageAesKey"`
 }
 
-type WeixinConfiguration struct {
-	// 公众号配置
-	OffiAccount *OffiAccount `json:"offiAccount" mapstructure:"offiAccount"`
+func (o *OffiAccount) Validate() error {
+	if o.AppID == "" {
+		return fmt.Errorf("appId参数不能为空")
+	}
+	if o.AppSecret == "" {
+		return fmt.Errorf("appSecret参数不能为空")
+	}
+	return nil
 }
 
 // 序列化为json字符串
