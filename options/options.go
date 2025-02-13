@@ -16,6 +16,7 @@ import (
 	"github.com/abmpio/configurationx/options/rabbitmq"
 	"github.com/abmpio/configurationx/options/redis"
 	"github.com/abmpio/configurationx/options/web"
+	"github.com/abmpio/configurationx/options/weixin"
 	"github.com/spf13/viper"
 )
 
@@ -31,6 +32,7 @@ type Options struct {
 	Nix           *nix.NixOptions
 	Rabbitmq      *rabbitmq.RabbitmqConfiguration
 	Web           *web.Configuration
+	Weixin        *weixin.WeixinConfiguration
 
 	//其它属性
 	extraProperties map[string]interface{}
@@ -65,16 +67,18 @@ func RegistExtraProperties(key string, value interface{}) {
 // 创建一个新的Options对象
 func NewOptions() Options {
 	return Options{
-		Db:              &db.DbConfiguration{},
-		Mongodb:         &mongodb.MongodbConfiguration{},
-		Redis:           &redis.RedisConfiguration{},
-		Minio:           &minio.MinioConfiguration{},
-		Elasticsearch:   &elasticsearch.ElasticsearchConfiguration{},
-		Kafka:           &kafka.KafkaConfiguration{},
-		Consul:          &consul.ConsulOptions{},
-		Nix:             nix.NewDefaultNixOptions(),
-		Rabbitmq:        &rabbitmq.RabbitmqConfiguration{},
-		Web:             web.NewConfiguration(),
+		Db:            &db.DbConfiguration{},
+		Mongodb:       &mongodb.MongodbConfiguration{},
+		Redis:         &redis.RedisConfiguration{},
+		Minio:         &minio.MinioConfiguration{},
+		Elasticsearch: &elasticsearch.ElasticsearchConfiguration{},
+		Kafka:         &kafka.KafkaConfiguration{},
+		Consul:        &consul.ConsulOptions{},
+		Nix:           nix.NewDefaultNixOptions(),
+		Rabbitmq:      &rabbitmq.RabbitmqConfiguration{},
+		Web:           web.NewConfiguration(),
+		Weixin:        &weixin.WeixinConfiguration{},
+
 		extraProperties: make(map[string]interface{}),
 	}
 }
@@ -151,6 +155,7 @@ func (o *Options) ReadFrom(v *viper.Viper) (err error) {
 		nix.ConfigurationKey:           o.Nix,
 		rabbitmq.ConfigurationKey:      o.Rabbitmq,
 		web.ConfigurationKey:           o.Web,
+		weixin.ConfigurationKey:        o.Weixin,
 	}
 	//读取已知的配置key
 	for eachKey, eachValue := range knowedOptions {
@@ -222,6 +227,9 @@ func (c *Options) PrintJsonString() {
 	}
 	if c.Web != nil {
 		fmt.Printf("web:%s \r\n", c.Web.ToJsonString())
+	}
+	if c.Weixin != nil {
+		fmt.Printf("web:%s \r\n", c.Weixin.ToJsonString())
 	}
 }
 
