@@ -7,6 +7,8 @@ import (
 
 	"github.com/abmpio/configurationx"
 	"github.com/abmpio/configurationx/options/consul"
+	"github.com/spf13/viper"
+	"gopkg.in/yaml.v3"
 )
 
 func ReadFromConsul(consulOptions consul.ConsulOptions, consulPathList []string) *configurationx.Configuration {
@@ -113,11 +115,53 @@ func getDataFromConfigManager(c *configurationx.Configuration, cm configurationx
 	if err != nil {
 		return nil, err
 	}
-	result := make(map[string]interface{})
-	err = json.Unmarshal(b, &result)
-	if err != nil {
-		c.Logger.Error("cann't unmarshal map from data, path: %s", path)
+	// 检测字符串格式
+	format := detectFormat(b)
+	if format == "Unknown" {
+		err = fmt.Errorf("unknow data format,path:%s", path)
+		c.Logger.Error(err.Error())
 		return nil, err
 	}
-	return result, err
+	v := viper.New()
+	v.SetConfigType(format)
+
+	// 尝试加载字符串
+	err = v.ReadConfig(strings.NewReader(string(b)))
+	if err != nil {
+		c.Logger.Error("error reading config from string:", err)
+		return nil, err
+	}
+	// result := make(map[string]interface{})
+	// err = json.Unmarshal(b, &result)
+	// if err != nil {
+	// 	c.Logger.Error("cann't unmarshal map from data, path: %s,err:%s", path,err.Error())
+	// 	return nil, err
+	// }
+	return v.AllSettings(), err
+}
+
+// check string format（JSON or YAML）
+func detectFormat(input []byte) string {
+	if isValidJSON(input) {
+		return "JSON"
+	}
+
+	if isValidYAML(input) {
+		return "YAML"
+	}
+
+	return "Unknown"
+}
+
+// check string is  JSON format
+func isValidJSON(input []byte) bool {
+	var js json.RawMessage
+	return json.Unmarshal(input, &js) == nil
+}
+
+// check string is YAML format
+func isValidYAML(input []byte) bool {
+	var y interface{}
+	err := yaml.Unmarshal(input, &y)
+	return err == nil
 }
