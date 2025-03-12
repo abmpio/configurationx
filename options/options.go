@@ -6,6 +6,7 @@ import (
 	"reflect"
 	"strings"
 
+	"github.com/abmpio/configurationx/options/aliyun"
 	"github.com/abmpio/configurationx/options/consul"
 	"github.com/abmpio/configurationx/options/db"
 	"github.com/abmpio/configurationx/options/elasticsearch"
@@ -33,6 +34,7 @@ type Options struct {
 	Rabbitmq      *rabbitmq.RabbitmqConfiguration
 	Web           *web.Configuration
 	Weixin        *weixin.WeixinConfiguration
+	Aliyun        *aliyun.AliyunConfiguration
 
 	//其它属性
 	extraProperties map[string]interface{}
@@ -78,6 +80,7 @@ func NewOptions() Options {
 		Rabbitmq:      &rabbitmq.RabbitmqConfiguration{},
 		Web:           web.NewConfiguration(),
 		Weixin:        &weixin.WeixinConfiguration{},
+		Aliyun:        &aliyun.AliyunConfiguration{},
 
 		extraProperties: make(map[string]interface{}),
 	}
@@ -156,6 +159,7 @@ func (o *Options) ReadFrom(v *viper.Viper) (err error) {
 		rabbitmq.ConfigurationKey:      o.Rabbitmq,
 		web.ConfigurationKey:           o.Web,
 		weixin.ConfigurationKey:        o.Weixin,
+		aliyun.ConfigurationKey:        o.Aliyun,
 	}
 	//读取已知的配置key
 	for eachKey, eachValue := range knowedOptions {
@@ -229,7 +233,10 @@ func (c *Options) PrintJsonString() {
 		fmt.Printf("web:%s \r\n", c.Web.ToJsonString())
 	}
 	if c.Weixin != nil {
-		fmt.Printf("web:%s \r\n", c.Weixin.ToJsonString())
+		fmt.Printf("weixin:%s \r\n", c.Weixin.ToJsonString())
+	}
+	if c.Aliyun != nil {
+		fmt.Printf("aliyun:%s \r\n", c.Aliyun.ToJsonString())
 	}
 }
 
