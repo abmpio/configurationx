@@ -5,7 +5,7 @@ import "os"
 var _options NixOptions
 
 const (
-	ConfigurationKey string = "nix"
+	ConfigurationKey string = "nix_sdk"
 )
 
 // 获取nix配置
