@@ -2,6 +2,7 @@ package configurationx
 
 import (
 	"errors"
+	"log/slog"
 
 	"github.com/abmpio/configurationx/options"
 	"github.com/spf13/viper"
@@ -12,7 +13,7 @@ var (
 )
 
 type Configuration struct {
-	Logger        viper.Logger
+	Logger        slog.Logger
 	viper         *viper.Viper
 	ConfigManager ConfigManager
 
@@ -77,13 +78,14 @@ func New() *Configuration {
 	return NewConfiguration(viper.New())
 }
 
-func NewConfiguration(viper *viper.Viper) *Configuration {
-	if viper == nil {
+func NewConfiguration(v *viper.Viper) *Configuration {
+	if v == nil {
 		panic(errors.New("viper参数不能为nil"))
 	}
 	configuration := new(Configuration)
-	configuration.Logger = newMyLogger()
-	configuration.viper = viper
+
+	configuration.Logger = *slog.Default()
+	configuration.viper = v
 	configuration.BaseConsulPathList = []string{"abmp/"}
 	configuration.Options = options.NewOptions()
 	return configuration
