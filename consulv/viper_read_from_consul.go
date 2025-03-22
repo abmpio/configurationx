@@ -3,6 +3,7 @@ package consulv
 import (
 	"encoding/json"
 	"fmt"
+	"log/slog"
 	"strings"
 
 	"github.com/abmpio/configurationx"
@@ -103,7 +104,7 @@ func getChildKvPairs(c *configurationx.Configuration, keyList []string, containS
 func initConfigManager(c *configurationx.Configuration, endPoint []string) error {
 	configManager, err := NewStandardConsulConfigManager(endPoint)
 	if err != nil {
-		c.Logger.Error("连接到consul时出现异常,异常信息:%s", err.Error())
+		c.Logger.Error(fmt.Sprintf("连接到consul时出现异常,err:%s", err.Error()))
 		return err
 	}
 	c.ConfigManager = configManager
@@ -163,5 +164,8 @@ func isValidJSON(input []byte) bool {
 func isValidYAML(input []byte) bool {
 	var y interface{}
 	err := yaml.Unmarshal(input, &y)
+	if err != nil {
+		slog.Default().Warn(fmt.Sprintf("无效的yaml格式,err:%s", err.Error()))
+	}
 	return err == nil
 }
