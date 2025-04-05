@@ -23,6 +23,8 @@ type ConsulOptions struct {
 	Datacenter string `json:"datacenter,omitempty"`
 	AclToken   string `json:"aclToken,omitempty"`
 	Disabled   bool   `json:"disabled,omitempty"`
+	// suffix for consul k/v path
+	ConsulPathSuffix string `json:"consulPathSuffix,omitempty"`
 
 	Registration *RegistrationInfo `json:"registration,omitempty"`
 }
@@ -34,6 +36,13 @@ func NewDefaultConfiguration() *ConsulOptions {
 	options.Disabled = true
 	options.Normalize()
 	return options
+}
+
+func (c *ConsulOptions) AppendSuffixPathForKVPath(path string) string {
+	if len(c.ConsulPathSuffix) <= 0 {
+		return path
+	}
+	return fmt.Sprintf("%s%s", path, c.ConsulPathSuffix)
 }
 
 func (c *ConsulOptions) Normalize() *ConsulOptions {
