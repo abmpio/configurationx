@@ -10,7 +10,17 @@ import (
 )
 
 var (
-	supportedFileExtList = []string{".yaml", ".yml", ".json"}
+	supportedFileExtList = []string{
+		fmt.Sprintf(".%s", ConfigType_Yaml),
+		fmt.Sprintf(".%s", ConfigType_Yml),
+		fmt.Sprintf(".%s", ConfigType_Json),
+	}
+)
+
+const (
+	ConfigType_Yaml string = "yaml"
+	ConfigType_Yml  string = "yml"
+	ConfigType_Json string = "json"
 )
 
 func setupViperFromDefaultPath(v *viper.Viper) {
@@ -20,7 +30,35 @@ func setupViperFromDefaultPath(v *viper.Viper) {
 		panic(err)
 	}
 	configFilePath := filepath.Join(basePath, "etc")
-	fileList, _ := discoverFileFromPath(configFilePath, supportedFileExtList)
+	SetupViperFromPath(v, configFilePath)
+}
+
+// setup viper from full filepath
+func SetupViperFromFilePath(v *viper.Viper, fullFilePath string) error {
+	v.SetConfigFile(fullFilePath)
+	err := v.ReadInConfig()
+	return err
+}
+
+// 从一段字符串中读取
+func SetupViperFromString(v *viper.Viper, configValue string, configType string) error {
+	v.SetConfigType(configType) // 必须指定类型
+	err := v.ReadConfig(strings.NewReader(configValue))
+	return err
+}
+
+// setup viper from specified filepath and specified ext names
+// only for .yaml,.yml,.json
+func SetupViperFromPath(v *viper.Viper, configFilePath string) {
+	SetupViperFromPathAndFileExt(v, configFilePath, supportedFileExtList)
+}
+
+// setup viper from specified filepath and specified ext names
+func SetupViperFromPathAndFileExt(v *viper.Viper, configFilePath string, fileExtList []string) {
+	if len(fileExtList) <= 0 {
+		return
+	}
+	fileList, _ := discoverFileFromPath(configFilePath, fileExtList)
 	if len(fileList) <= 0 {
 		// empty folder
 		return

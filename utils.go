@@ -8,6 +8,8 @@ import (
 	"strings"
 )
 
+// search all file for ext
+// for example, search all .json,.yaml,.yml files
 func discoverFileFromPath(path string, fileExt []string) ([]string, error) {
 	if _, err := os.Stat(path); err != nil {
 		// is not exist
