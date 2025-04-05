@@ -129,7 +129,7 @@ func getDataFromConfigManager(c *configurationx.Configuration, cm configurationx
 	// 尝试加载字符串
 	err = v.ReadConfig(strings.NewReader(string(b)))
 	if err != nil {
-		c.Logger.Error("error reading config from string:", err)
+		c.Logger.Error(fmt.Sprintf("error reading config from string,err:%s", err.Error()))
 		return nil, err
 	}
 	// result := make(map[string]interface{})
