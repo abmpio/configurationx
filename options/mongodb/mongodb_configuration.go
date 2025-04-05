@@ -16,6 +16,12 @@ type MongodbConfiguration struct {
 	MongodbList map[string]MongodbOptions `mapstructure:"list" json:"list" yaml:"list"`
 }
 
+func NewDefaultConfiguration() *MongodbConfiguration {
+	options := &MongodbConfiguration{}
+	options.MongodbList = make(map[string]MongodbOptions)
+	return options
+}
+
 func (c *MongodbConfiguration) GetDefaultOptions() *MongodbOptions {
 
 	result := c.GetOptions("")

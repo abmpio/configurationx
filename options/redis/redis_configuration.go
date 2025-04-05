@@ -16,6 +16,12 @@ type RedisConfiguration struct {
 	RedisList map[string]RedisOptions `mapstructure:"list" json:"list" yaml:"list"`
 }
 
+func NewDefaultConfiguration() *RedisConfiguration {
+	options := &RedisConfiguration{}
+	options.RedisList = map[string]RedisOptions{}
+	return options
+}
+
 func (c *RedisConfiguration) GetDefaultOptions() *RedisOptions {
 
 	result := c.GetOptions("")

@@ -94,6 +94,7 @@ func NewConfiguration(v *viper.Viper) *Configuration {
 // Reset all configuration
 func (c *Configuration) Reset() {
 	c.viper = viper.New()
+	(&c.Options).Reset()
 }
 
 // Merge others to c
@@ -105,11 +106,6 @@ func (c *Configuration) Merge(opts ...ConfigurationReadOption) *Configuration {
 		eachOpt(c)
 	}
 	return c
-}
-
-// 反序列化指定的key的值到一个对象中
-func (c *Configuration) UnmarshFromKey(key string, v interface{}, opts ...viper.DecoderConfigOption) error {
-	return c.viper.UnmarshalKey(key, v, opts...)
 }
 
 func (c *Configuration) GetViper() *viper.Viper {

@@ -16,6 +16,13 @@ type AliyunConfiguration struct {
 	SmsList map[string]*AliyunSmsOptions `mapstructure:"smsList" json:"smsList" yaml:"smsList"`
 }
 
+// new default configuration
+func NewDefaultConfiguration() *AliyunConfiguration {
+	options := &AliyunConfiguration{}
+	options.SmsList = make(map[string]*AliyunSmsOptions)
+	return options
+}
+
 // 获取默认的sms配置
 func (c *AliyunConfiguration) GetDefaultSmsOptions() *AliyunSmsOptions {
 	result := c.GetSmsOptions("")

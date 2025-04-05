@@ -10,9 +10,12 @@ type NixOptions struct {
 	DefaultApp string `json:"defaultApp,omitempty"`
 }
 
+// new default nix options
+// Disabled: true
 func NewDefaultNixOptions() *NixOptions {
 	options := &NixOptions{}
 	options.Normalize()
+	options.Disabled = true
 	return options
 }
 

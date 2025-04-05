@@ -5,3 +5,9 @@ type WeixinConfiguration struct {
 	OffiAccount *OffiAccount `json:"offiAccount" mapstructure:"offiAccount"`
 	Work        *Work        `json:"work" mapstructure:"work"`
 }
+
+// new default configuration
+func NewDefaultConfiguration() *WeixinConfiguration {
+	options := &WeixinConfiguration{}
+	return options
+}

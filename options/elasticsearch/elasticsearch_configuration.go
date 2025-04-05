@@ -16,6 +16,12 @@ type ElasticsearchConfiguration struct {
 	ElasticsearchList map[string]ElasticsearchOptions `mapstructure:"list" json:"list" yaml:"list"`
 }
 
+func NewDefaultConfiguration() *ElasticsearchConfiguration {
+	options := &ElasticsearchConfiguration{}
+	options.ElasticsearchList = make(map[string]ElasticsearchOptions)
+	return options
+}
+
 // 获取主要的db配置
 func (c *ElasticsearchConfiguration) GetDefaultOptions() *ElasticsearchOptions {
 

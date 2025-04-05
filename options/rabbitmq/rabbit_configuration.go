@@ -16,6 +16,13 @@ type RabbitmqConfiguration struct {
 	RabbitmqList map[string]RabbitmqOptions `mapstructure:"list" json:"list" yaml:"list"`
 }
 
+// new default configuration
+func NewDefaultConfiguration() *RabbitmqConfiguration {
+	options := &RabbitmqConfiguration{}
+	options.RabbitmqList = make(map[string]RabbitmqOptions)
+	return options
+}
+
 func (c *RabbitmqConfiguration) GetDefaultOptions() *RabbitmqOptions {
 
 	result := c.GetOptions("")

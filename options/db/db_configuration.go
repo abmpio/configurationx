@@ -16,6 +16,12 @@ type DbConfiguration struct {
 	DbList map[string]SpecializedDB `mapstructure:"list" json:"list" yaml:"list"`
 }
 
+func NewDefaultConfiguration() *DbConfiguration {
+	options := &DbConfiguration{}
+	options.DbList = make(map[string]SpecializedDB)
+	return options
+}
+
 // 获取主要的db配置
 func (c *DbConfiguration) GetDefaultOptions() *SpecializedDB {
 

@@ -16,6 +16,12 @@ type KafkaConfiguration struct {
 	KafkaList map[string]KafkaOptions `mapstructure:"list" json:"list" yaml:"list"`
 }
 
+func NewDefaultConfiguration() *KafkaConfiguration {
+	options := &KafkaConfiguration{}
+	options.KafkaList = make(map[string]KafkaOptions)
+	return options
+}
+
 func (c *KafkaConfiguration) GetDefaultOptions() *KafkaOptions {
 
 	result := c.GetOptions("")

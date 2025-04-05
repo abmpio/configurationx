@@ -16,6 +16,12 @@ type MinioConfiguration struct {
 	MinioList map[string]MinioOptions `mapstructure:"list" json:"list" yaml:"list"`
 }
 
+func NewDefaultConfiguration() *MinioConfiguration {
+	options := &MinioConfiguration{}
+	options.MinioList = make(map[string]MinioOptions)
+	return options
+}
+
 func (c *MinioConfiguration) GetDefaultOptions() *MinioOptions {
 
 	result := c.GetOptions("")

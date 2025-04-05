@@ -13,20 +13,6 @@ func GetConsulOptions() *ConsulOptions {
 	return &_options
 }
 
-// // 从中读取配置
-// func ReadFrom(v *viper.Viper) error {
-// 	err := v.UnmarshalKey(ConfigurationKey, &_options)
-// 	if err != nil {
-// 		return err
-// 	}
-// 	(&_options).Normalize()
-// 	if len(_options.AclToken) > 0 {
-// 		os.Setenv("CONSUL_HTTP_TOKEN", _options.AclToken)
-// 	}
-
-// 	return nil
-// }
-
 func SetConsul(options *ConsulOptions) {
 	if options != nil {
 		_options = *options

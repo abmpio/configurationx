@@ -68,22 +68,9 @@ func RegistExtraProperties(key string, value interface{}) {
 
 // 创建一个新的Options对象
 func NewOptions() Options {
-	return Options{
-		Db:            &db.DbConfiguration{},
-		Mongodb:       &mongodb.MongodbConfiguration{},
-		Redis:         &redis.RedisConfiguration{},
-		Minio:         &minio.MinioConfiguration{},
-		Elasticsearch: &elasticsearch.ElasticsearchConfiguration{},
-		Kafka:         &kafka.KafkaConfiguration{},
-		Consul:        &consul.ConsulOptions{},
-		Nix:           nix.NewDefaultNixOptions(),
-		Rabbitmq:      &rabbitmq.RabbitmqConfiguration{},
-		Web:           web.NewConfiguration(),
-		Weixin:        &weixin.WeixinConfiguration{},
-		Aliyun:        &aliyun.AliyunConfiguration{},
-
-		extraProperties: make(map[string]interface{}),
-	}
+	o := &Options{}
+	o.Reset()
+	return *o
 }
 
 // 获取额外的属性值,如果key不存在，则直接返回nil
@@ -192,6 +179,23 @@ func (o *Options) ReadFrom(v *viper.Viper) (err error) {
 		o.SetExtraProperties(eachKey, currentValue)
 	}
 	return nil
+}
+
+func (o *Options) Reset() {
+	o.Db = db.NewDefaultConfiguration()
+	o.Mongodb = mongodb.NewDefaultConfiguration()
+	o.Redis = redis.NewDefaultConfiguration()
+	o.Minio = minio.NewDefaultConfiguration()
+	o.Elasticsearch = elasticsearch.NewDefaultConfiguration()
+	o.Kafka = kafka.NewDefaultConfiguration()
+	o.Consul = consul.NewDefaultConfiguration()
+	o.Nix = nix.NewDefaultNixOptions()
+	o.Rabbitmq = rabbitmq.NewDefaultConfiguration()
+	o.Web = web.NewConfiguration()
+	o.Weixin = weixin.NewDefaultConfiguration()
+	o.Aliyun = aliyun.NewDefaultConfiguration()
+
+	o.extraProperties = make(map[string]interface{})
 }
 
 // serialize Options to json string

@@ -27,6 +27,15 @@ type ConsulOptions struct {
 	Registration *RegistrationInfo `json:"registration,omitempty"`
 }
 
+// new default consul option
+// Disable: true
+func NewDefaultConfiguration() *ConsulOptions {
+	options := &ConsulOptions{}
+	options.Disabled = true
+	options.Normalize()
+	return options
+}
+
 func (c *ConsulOptions) Normalize() *ConsulOptions {
 	if c.Port <= 0 {
 		c.Port = 8500
