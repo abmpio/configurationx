@@ -23,7 +23,9 @@ const (
 	ConfigType_Json string = "json"
 )
 
-func setupViperFromDefaultPath(v *viper.Viper) {
+// setup from ./etc/ path
+// if read error then panic
+func SetupViperFromDefaultPath(v *viper.Viper) {
 	basePath, err := os.Getwd()
 	if err != nil {
 		err = fmt.Errorf("os.GetWd error, err:%v", err)
@@ -92,7 +94,7 @@ func SetupViperFromPathAndFileExt(v *viper.Viper, configFilePath string, fileExt
 
 func (c *Configuration) readFromDefaultPath() {
 	defaultViper := viper.New()
-	setupViperFromDefaultPath(defaultViper)
+	SetupViperFromDefaultPath(defaultViper)
 	//合并
 	c.viper.MergeConfigMap(defaultViper.AllSettings())
 }
