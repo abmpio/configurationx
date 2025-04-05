@@ -86,7 +86,7 @@ func NewConfiguration(v *viper.Viper) *Configuration {
 
 	configuration.Logger = *slog.Default()
 	configuration.viper = v
-	configuration.BaseConsulPathList = []string{"abmp/"}
+	configuration.BaseConsulPathList = []string{"abmpio/"}
 	configuration.Options = options.NewOptions()
 	return configuration
 }
