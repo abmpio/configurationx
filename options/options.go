@@ -7,6 +7,7 @@ import (
 	"strings"
 
 	"github.com/abmpio/configurationx/options/aliyun"
+	"github.com/abmpio/configurationx/options/casdoor"
 	"github.com/abmpio/configurationx/options/consul"
 	"github.com/abmpio/configurationx/options/db"
 	"github.com/abmpio/configurationx/options/elasticsearch"
@@ -35,6 +36,7 @@ type Options struct {
 	Web           *web.Configuration
 	Weixin        *weixin.WeixinConfiguration
 	Aliyun        *aliyun.AliyunConfiguration
+	Casdoor       *casdoor.CasdoorOptions
 
 	//其它属性
 	extraProperties map[string]interface{}
@@ -147,6 +149,7 @@ func (o *Options) ReadFrom(v *viper.Viper) (err error) {
 		web.ConfigurationKey:           o.Web,
 		weixin.ConfigurationKey:        o.Weixin,
 		aliyun.ConfigurationKey:        o.Aliyun,
+		casdoor.ConfigurationKey:       o.Casdoor,
 	}
 	//读取已知的配置key
 	for eachKey, eachValue := range knowedOptions {
@@ -241,6 +244,9 @@ func (c *Options) PrintJsonString() {
 	}
 	if c.Aliyun != nil {
 		fmt.Printf("aliyun:%s \r\n", c.Aliyun.ToJsonString())
+	}
+	if c.Casdoor != nil {
+		fmt.Printf("casdoor:%s \r\n", c.Casdoor.ToJsonString())
 	}
 }
 

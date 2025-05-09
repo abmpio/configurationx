@@ -1,6 +1,7 @@
 package casdoor
 
 import (
+	"encoding/json"
 	"io"
 	"os"
 	"strings"
@@ -24,6 +25,18 @@ type CasdoorOptions struct {
 	Jwt      JwtOptions `json:"jwt,omitempty" mapstructure:"jwt"`
 	// file path for Certificate
 	CertificateFilePath string `json:"certificateFilePath,omitempty"`
+
+	// app-built-in app clientId, clientSecret,certificate,certificateFilePath
+	AppBuiltinClientId            string `json:"appBuiltinClientId,omitempty"`
+	AppBuiltinClientSecret        string `json:"appBuiltinClientSecret,omitempty"`
+	AppBuiltinCertificate         string `json:"appBuiltinCertificate,omitempty"`
+	AppBuiltinCertificateFilePath string `json:"appBuiltinCertificateFilePath,omitempty"`
+}
+
+// 序列化为json字符串
+func (c *CasdoorOptions) ToJsonString() []byte {
+	jsonValue, _ := json.Marshal(c)
+	return jsonValue
 }
 
 // 从中读取配置
@@ -32,7 +45,7 @@ func ReadFrom(v *viper.Viper) (CasdoorOptions, error) {
 
 	err := v.UnmarshalKey(ConfigurationKey, &options)
 	if err == nil {
-		options.Jwt.Normalize()
+		options.Normalize()
 	}
 	return options, err
 }
@@ -44,6 +57,19 @@ func (o *CasdoorOptions) Normalize() {
 			panic(err)
 		}
 		o.Certificate = string(certData)
+	}
+	if len(o.AppBuiltinCertificate) <= 0 {
+		if strings.TrimSpace(o.AppBuiltinCertificateFilePath) != "" {
+			certData, err := readFile(o.CertificateFilePath)
+			if err != nil {
+				panic(err)
+			}
+			// set app-builtin certificate
+			o.AppBuiltinCertificate = string(certData)
+		}
+		if len(o.AppBuiltinCertificate) <= 0 {
+			o.AppBuiltinCertificate = o.Certificate
+		}
 	}
 	o.Jwt.Normalize()
 }
