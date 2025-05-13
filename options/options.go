@@ -124,6 +124,10 @@ func (o *Options) UnmarshalPropertiesTo(key string, v interface{}) bool {
 	return err == nil
 }
 
+type INormalizable interface {
+	Normalize()
+}
+
 // 从中读取配置
 func (o *Options) ReadFrom(v *viper.Viper) (err error) {
 	_registExtraPropertes = make(map[string]interface{})
@@ -157,6 +161,11 @@ func (o *Options) ReadFrom(v *viper.Viper) (err error) {
 		if err != nil {
 			return err
 		}
+		if normalizable, ok := eachValue.(INormalizable); ok {
+			// normalize
+			normalizable.Normalize()
+		}
+
 	}
 	//标准化consul配置，以补充相关默认值
 	(o.Consul).Normalize()
