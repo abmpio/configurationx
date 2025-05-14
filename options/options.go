@@ -157,6 +157,9 @@ func (o *Options) ReadFrom(v *viper.Viper) (err error) {
 	}
 	//读取已知的配置key
 	for eachKey, eachValue := range knowedOptions {
+		if eachValue == nil {
+			continue
+		}
 		err = v.UnmarshalKey(eachKey, eachValue)
 		if err != nil {
 			return err
@@ -206,6 +209,7 @@ func (o *Options) Reset() {
 	o.Web = web.NewConfiguration()
 	o.Weixin = weixin.NewDefaultConfiguration()
 	o.Aliyun = aliyun.NewDefaultConfiguration()
+	o.Casdoor = casdoor.NewDefaultCasdoorOptions()
 
 	o.extraProperties = make(map[string]interface{})
 }

@@ -50,6 +50,12 @@ func ReadFrom(v *viper.Viper) (CasdoorOptions, error) {
 	return options, err
 }
 
+// new default configuration
+func NewDefaultCasdoorOptions() *CasdoorOptions {
+	options := &CasdoorOptions{}
+	return options
+}
+
 func (o *CasdoorOptions) Normalize() {
 	if len(o.Certificate) <= 0 && strings.TrimSpace(o.CertificateFilePath) != "" {
 		certData, err := readFile(o.CertificateFilePath)
