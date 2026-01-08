@@ -73,6 +73,8 @@ func getChildKvPairs(c *configurationx.Configuration, keyList []string, containS
 			return childKeyList, err
 		}
 		if len(thisChildKvPairs) <= 0 {
+			//没有子节点，则直接返回
+			c.Logger.Debug(fmt.Sprintf("path:%s 下没有读取到任何子key", eachKey))
 			continue
 		}
 		for _, eachChildKey := range thisChildKvPairs {
