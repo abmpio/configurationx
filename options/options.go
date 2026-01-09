@@ -14,7 +14,6 @@ import (
 	"github.com/abmpio/configurationx/options/kafka"
 	"github.com/abmpio/configurationx/options/minio"
 	"github.com/abmpio/configurationx/options/mongodb"
-	"github.com/abmpio/configurationx/options/nix"
 	"github.com/abmpio/configurationx/options/rabbitmq"
 	"github.com/abmpio/configurationx/options/redis"
 	"github.com/abmpio/configurationx/options/web"
@@ -31,7 +30,6 @@ type Options struct {
 	Elasticsearch *elasticsearch.ElasticsearchConfiguration
 	Kafka         *kafka.KafkaConfiguration
 	Consul        *consul.ConsulOptions
-	Nix           *nix.NixOptions
 	Rabbitmq      *rabbitmq.RabbitmqConfiguration
 	Web           *web.Configuration
 	Weixin        *weixin.WeixinConfiguration
@@ -148,7 +146,6 @@ func (o *Options) ReadFrom(v *viper.Viper) (err error) {
 		elasticsearch.ConfigurationKey: o.Elasticsearch,
 		kafka.ConfigurationKey:         o.Kafka,
 		consul.ConfigurationKey:        o.Consul,
-		nix.ConfigurationKey:           o.Nix,
 		rabbitmq.ConfigurationKey:      o.Rabbitmq,
 		web.ConfigurationKey:           o.Web,
 		weixin.ConfigurationKey:        o.Weixin,
@@ -175,8 +172,6 @@ func (o *Options) ReadFrom(v *viper.Viper) (err error) {
 
 	// set consul options
 	consul.SetConsul(o.Consul)
-	// set nix options
-	nix.SetNix(o.Nix)
 
 	//读取额外的配置key
 	allRootKey := getAllRootKeysFromViper(v)
@@ -204,7 +199,6 @@ func (o *Options) Reset() {
 	o.Elasticsearch = elasticsearch.NewDefaultConfiguration()
 	o.Kafka = kafka.NewDefaultConfiguration()
 	o.Consul = consul.NewDefaultConfiguration()
-	o.Nix = nix.NewDefaultNixOptions()
 	o.Rabbitmq = rabbitmq.NewDefaultConfiguration()
 	o.Web = web.NewConfiguration()
 	o.Weixin = weixin.NewDefaultConfiguration()
@@ -242,9 +236,6 @@ func (c *Options) PrintJsonString() {
 	}
 	if c.Consul != nil {
 		fmt.Printf("consul:%s \r\n", c.Consul.ToJsonString())
-	}
-	if c.Nix != nil {
-		fmt.Printf("nix:%s \r\n", c.Nix.ToJsonString())
 	}
 	if c.Rabbitmq != nil {
 		fmt.Printf("rabbitmq:%s \r\n", c.Rabbitmq.ToJsonString())
