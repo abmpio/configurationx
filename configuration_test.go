@@ -1,12 +1,25 @@
 package configurationx
 
 import (
+	"log/slog"
+	"os"
 	"testing"
 
 	"github.com/go-viper/mapstructure/v2"
 	"github.com/spf13/viper"
 	"github.com/stretchr/testify/assert"
 )
+
+func TestWithLogger(t *testing.T) {
+	c := New()
+	newLogger := slog.New(slog.NewTextHandler(os.Stdout, &slog.HandlerOptions{
+		Level: slog.LevelDebug,
+	}))
+
+	WithLogger(newLogger)(c)
+
+	assert.Equal(t, newLogger, &c.Logger)
+}
 
 func TestSetupViperFromFilePath(t *testing.T) {
 	configValue := `

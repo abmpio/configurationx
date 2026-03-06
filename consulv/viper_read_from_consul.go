@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"log/slog"
+	"os"
 	"strings"
 
 	"github.com/abmpio/configurationx"
@@ -13,7 +14,24 @@ import (
 )
 
 func ReadFromConsul(consulOptions consul.ConsulOptions, consulPathList []string) *configurationx.Configuration {
+	defaultDebugLogger := slog.New(slog.NewTextHandler(os.Stderr, &slog.HandlerOptions{
+		Level: slog.LevelDebug,
+	}))
+	return ReadFromConsulWithOptions(
+		consulOptions,
+		consulPathList,
+		configurationx.WithLogger(defaultDebugLogger),
+	)
+}
+
+func ReadFromConsulWithOptions(consulOptions consul.ConsulOptions, consulPathList []string, opts ...configurationx.ConfigurationReadOption) *configurationx.Configuration {
 	c := configurationx.New()
+	for _, eachOpt := range opts {
+		if eachOpt == nil {
+			continue
+		}
+		eachOpt(c)
+	}
 	if len(consulPathList) <= 0 {
 		return c
 	}

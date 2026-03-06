@@ -24,6 +24,15 @@ type Configuration struct {
 
 type ConfigurationReadOption func(c *Configuration)
 
+func WithLogger(logger *slog.Logger) ConfigurationReadOption {
+	return func(c *Configuration) {
+		if c == nil || logger == nil {
+			return
+		}
+		c.Logger = *logger
+	}
+}
+
 // 注册额外的配置信息
 func RegistExtraProperties(key string, value interface{}) {
 	options.RegistExtraProperties(key, value)
