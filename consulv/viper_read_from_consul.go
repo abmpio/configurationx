@@ -42,6 +42,8 @@ func ReadFromConsul(consulOptions consul.ConsulOptions, consulPathList []string)
 		return c
 	}
 
+	c.Logger.Debug(fmt.Sprintf("从consul中读取到key path列表: %v", strings.Join(childKeyList, ",")))
+
 	for _, eachChildKey := range childKeyList {
 		allSettings, err := getDataFromConfigManager(c, c.ConfigManager, eachChildKey)
 		if err != nil {
